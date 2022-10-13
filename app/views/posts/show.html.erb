@@ -10,7 +10,8 @@
 </div>
 <h5>All comments</h5>
         <% @post.comments.each do |comment| %>
-          <%= comment.content %><hr/>
+          <%= comment.content %>
+          <%= button_to "Destroy", [@commentable, comment ], method: :delete %><hr/>
           <% end %><hr/>
       <h5>Add comment</h5>
 

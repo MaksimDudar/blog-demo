@@ -1,5 +1,5 @@
 class CommentsController < ApplicationController
-  # before_action :set_comment, only: %i[ show edit update destroy ]
+  before_action :set_comment, only: %i[ show edit update destroy ]
 
   # GET /comments or /comments.json
   def index
@@ -8,6 +8,7 @@ class CommentsController < ApplicationController
 
   # GET /comments/1 or /comments/1.json
   def show
+      @comment = Comment.all
   end
 
   # GET /comments/new
@@ -56,18 +57,20 @@ class CommentsController < ApplicationController
   # DELETE /comments/1 or /comments/1.json
   def destroy
     @comment.destroy
-
-    respond_to do |format|
-      format.html { redirect_to comments_url, notice: "Comment was successfully destroyed." }
-      format.json { head :no_content }
+    if @comment.destroy
+      redirect_to @commentable = Post.find_by_id(params[:post_id]) , notice: "Comment was successfully destroyed."
     end
+    # respond_to do |format|
+    #   format.html { redirect_to post_url(@post), notice: "Comment was successfully destroyed." }
+    #   format.json { head :no_content }
+    # end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    # def set_comment
-    #   @comment = Comment.find(params[:id])
-    # end
+    def set_comment
+      @comment = Comment.find(params[:id])
+    end
 
     # Only allow a list of trusted parameters through.
     def comment_params
