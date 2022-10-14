@@ -1,10 +1,28 @@
 <p style="color: green"><%= notice %></p>
 
-<%= render @image %>
+<%= render @commentable %>
 
 <div>
-  <%= link_to "Edit this image", edit_image_path(@image) %> |
+  <%= link_to "Edit this image", edit_image_path(@commentable) %> |
   <%= link_to "Back to images", images_path %>
 
-  <%= button_to "Destroy this image", @image, method: :delete %>
+  <%= button_to "Destroy this image", @commentable, method: :delete %>
 </div>
+<h5>All comments</h5>
+        <% @commentable.comments.each do |comment| %>
+          <%= comment.content %>
+          <%= button_to "Destroy", [@commentable, comment ], method: :delete %><hr/>
+          <% end %><hr/>
+      <h5>Add comment</h5>
+
+      <p>
+        <%= form_for ([@commentable, @comment]) do |f| %>
+          <p>
+            <%= f.text_field :content %>
+          </p>
+
+          <p>
+            <%= f.submit class:"btn btn-outline-warning" %>
+          </p>
+
+        <% end %>

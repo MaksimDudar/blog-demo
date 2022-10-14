@@ -8,11 +8,15 @@ class ImagesController < ApplicationController
 
   # GET /images/1 or /images/1.json
   def show
+    @images = Image.find(params[:id])
+    @commentable = @images
+    @comments = @commentable.comments
+    @comment = Comment.new
   end
 
   # GET /images/new
   def new
-    @image = Image.new
+    @image = @commentable = Image.new
   end
 
   # GET /images/1/edit
@@ -49,8 +53,7 @@ class ImagesController < ApplicationController
 
   # DELETE /images/1 or /images/1.json
   def destroy
-    @image.destroy
-
+    @commentable.destroy
     respond_to do |format|
       format.html { redirect_to images_url, notice: "Image was successfully destroyed." }
       format.json { head :no_content }
@@ -60,7 +63,7 @@ class ImagesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_image
-      @image = Image.find(params[:id])
+      @commentable = Image.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.

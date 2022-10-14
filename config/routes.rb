@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   resources :links
-  resources :images
+  resources :images  do
+    resources :comments
+  end
   resources :posts  do
     resources :comments
   end

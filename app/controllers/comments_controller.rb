@@ -8,7 +8,6 @@ class CommentsController < ApplicationController
 
   # GET /comments/1 or /comments/1.json
   def show
-      @comment = Comment.all
   end
 
   # GET /comments/new
@@ -22,7 +21,7 @@ class CommentsController < ApplicationController
 
   # POST /comments or /comments.json
   def create
-    @commentable = Post.find_by_id(params[:post_id])
+    @commentable = find_commentable
     @commentable.comments.build(comment_params)
     if @commentable.save
       redirect_to @commentable, notice: "Comment created."
@@ -58,7 +57,7 @@ class CommentsController < ApplicationController
   def destroy
     @comment.destroy
     if @comment.destroy
-      redirect_to @commentable = Post.find_by_id(params[:post_id]) , notice: "Comment was successfully destroyed."
+      redirect_to @commentable = find_commentable , notice: "Comment was successfully destroyed."
     end
     # respond_to do |format|
     #   format.html { redirect_to post_url(@post), notice: "Comment was successfully destroyed." }
@@ -67,9 +66,19 @@ class CommentsController < ApplicationController
   end
 
   private
+
+  def find_commentable
+    params.each do |name, value|
+        if name =~ /(.+)_id$/
+            return $1.classify.constantize.find(value)
+        end
+    end
+    raise ActiveRecord:NoRecord.new("Couldn\'t find it captain!")
+end
     # Use callbacks to share common setup or constraints between actions.
     def set_comment
       @comment = Comment.find(params[:id])
+
     end
 
     # Only allow a list of trusted parameters through.
