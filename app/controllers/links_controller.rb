@@ -8,11 +8,15 @@ class LinksController < ApplicationController
 
   # GET /links/1 or /links/1.json
   def show
+    @link = Link.find(params[:id])
+    @commentable = @link
+    @comments = @commentable.comments
+    @comment = Comment.new
   end
 
   # GET /links/new
   def new
-    @link = Link.new
+    @link = @commentable = Link.new
   end
 
   # GET /links/1/edit
@@ -49,7 +53,7 @@ class LinksController < ApplicationController
 
   # DELETE /links/1 or /links/1.json
   def destroy
-    @link.destroy
+    @commentable.destroy
 
     respond_to do |format|
       format.html { redirect_to links_url, notice: "Link was successfully destroyed." }
@@ -60,7 +64,7 @@ class LinksController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_link
-      @link = Link.find(params[:id])
+      @commentable = Link.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.

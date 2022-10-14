@@ -1,9 +1,11 @@
 Rails.application.routes.draw do
-  resources :links
-  resources :images  do
+  resources :links do
     resources :comments
   end
-  resources :posts  do
+  resources :images do
+    resources :comments
+  end
+  resources :posts do
     resources :comments
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
